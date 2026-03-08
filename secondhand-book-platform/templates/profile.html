@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心 - 二手书平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">二手书平台</a>
+        <div class="ms-auto">
+            <a class="btn btn-light me-2" href="{{ url_for('index') }}">返回首页</a>
+            <a class="btn btn-light" href="{{ url_for('logout') }}">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <!-- 提示信息 -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <!-- 左侧菜单 -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">个人中心</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ url_for('profile') }}" class="list-group-item list-group-item-action active">基本信息</a>
+                    <a href="{{ url_for('edit_profile') }}" class="list-group-item list-group-item-action">修改信息</a>
+                    <a href="{{ url_for('change_pwd') }}" class="list-group-item list-group-item-action">修改密码</a>
+                    <a href="{{ url_for('my_books') }}" class="list-group-item list-group-item-action">我的发布</a>
+                    <a href="{{ url_for('my_favorites') }}" class="list-group-item list-group-item-action">我的收藏</a>
+                    <a href="{{ url_for('my_messages') }}" class="list-group-item list-group-item-action">我的消息</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧基本信息 -->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">基本信息</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th width="120px">用户名</th>
+                                <td>{{ user.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>昵称</th>
+                                <td>{{ user.nickname or '未设置' }}</td>
+                            </tr>
+                            <tr>
+                                <th>邮箱</th>
+                                <td>{{ user.email or '未绑定' }}</td>
+                            </tr>
+                            <tr>
+                                <th>手机号</th>
+                                <td>{{ user.phone or '未绑定' }}</td>
+                            </tr>
+                            <tr>
+                                <th>注册时间</th>
+                                <td>{{ user.create_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">修改个人信息</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的消息 - 二手书平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">二手书平台</a>
+        <div class="ms-auto">
+            <a class="btn btn-light me-2" href="{{ url_for('profile') }}">返回个人中心</a>
+            <a class="btn btn-light" href="{{ url_for('logout') }}">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h3 class="text-center mb-5">我的消息</h3>
+
+    <!-- 收到的消息 -->
+    <div class="mb-5">
+        <h4>收到的消息</h4>
+        <div class="card">
+            <div class="card-body">
+                {% if received_msgs %}
+                    {% for msg in received_msgs %}
+                        <div class="border-bottom pb-3 mb-3 {% if not msg.is_read %}bg-light{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-1">
+                                    来自：{{ msg.sender.username }} |
+                                    书籍：<a href="{{ url_for('book_detail', book_id=msg.book_id) }}" class="text-primary">{{ msg.book.title }}</a>
+                                </h6>
+                                <small class="text-muted">{{ msg.create_time.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <p class="mb-2">{{ msg.content }}</p>
+                            <a href="{{ url_for('reply_message', msg_id=msg.id) }}" class="btn btn-sm btn-primary">回复</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center py-3">暂无收到的消息</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 发出的消息 -->
+    <div>
+        <h4>发出的消息</h4>
+        <div class="card">
+            <div class="card-body">
+                {% if sent_msgs %}
+                    {% for msg in sent_msgs %}
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-1">
+                                    发送给：{{ msg.receiver.username }} |
+                                    书籍：<a href="{{ url_for('book_detail', book_id=msg.book_id) }}" class="text-primary">{{ msg.book.title }}</a>
+                                </h6>
+                                <small class="text-muted">{{ msg.create_time.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <p class="mb-0">{{ msg.content }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center py-3">暂无发出的消息</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

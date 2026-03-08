@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑书籍 - {{ book.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">二手书平台</a>
+        <div class="ms-auto">
+            <a class="btn btn-light" href="{{ url_for('book_detail', book_id=book.id) }}">返回详情</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5" style="max-width: 600px;">
+    <h3 class="text-center mb-4">编辑书籍信息</h3>
+
+    <!-- 提示信息 -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- 编辑表单（回显原有数据） -->
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">书名 *</label>
+            <input type="text" name="title" class="form-control" value="{{ book.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">作者</label>
+            <input type="text" name="author" class="form-control" value="{{ book.author or '' }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">价格 *</label>
+            <input type="number" step="0.01" name="price" class="form-control" value="{{ book.price }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">书籍描述</label>
+            <textarea name="desc" class="form-control" rows="4">{{ book.desc or '' }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">更换书籍图片（可选）</label>
+            <input type="file" name="pic" class="form-control" accept="image/*">
+            {% if book.pic %}
+                <div class="mt-2">
+                    <small class="text-muted">当前图片：</small>
+                    <img src="/static/{{ book.pic }}" class="img-thumbnail mt-1" style="width: 100px; height: auto;">
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">保存修改</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
